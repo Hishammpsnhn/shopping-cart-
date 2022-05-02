@@ -3,7 +3,7 @@ var collection = require('../config/collections')
 module.exports={
     addProduct: (product,callback)=>{
          db.get().collection(collection.PRODUCTS_COLLECTION).insertOne(product).then((data)=>{
-       
+            console.log(product)
             callback(data.insertedId)
         })
         

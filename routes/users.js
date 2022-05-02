@@ -1,35 +1,31 @@
+const { response } = require('express');
 var express = require('express');
 var router = express.Router();
-
+var productHelper = require('../helpers/product-helpers');
+const userHelper = require('../helpers/user-helper');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  let products =[
-    {
-      name:"IPHONE 13",
-      catagory:"Mobile",
-      desc:"New Edition of Iphone any desc",
-      image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZITkN4RAy73o0rJUEgCb5RDDktkHwHmAycw&usqp=CAU'
-    },
-    {
-      name:"ASUS ROG",
-      catagory:"Laptop",
-      desc:"New Edition of pc any desc",
-      image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQMoL2SofNVQHOSUeM27UqOus_Rm2e6SzFYg&usqp=CAU'
-    },
-    {
-      name:"AIRPOD",
-      catagory:"Earphone",
-      desc:"New Edition of earphone any desc",
-      image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAsgCJVbD7JvnQ_wBxfox6TAVqrLXSe8Lu-A&usqp=CAU'
-    },
-    {
-      name:"SUGAR",
-      catagory:"Food",
-      desc:"New Edition of food any desc",
-      image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK4Q9sJBhgMgynBOgR49fCbianNGOwHpKgtw&usqp=CAU'
-    },
-  ]
-  res.render('index', {products,admin:false});
+router.get('/', function (req, res, next) {
+
+  productHelper.getAllProducts().then((products) => {
+    console.log(products)
+    res.render('user/view-products', { products, admin: false })
+  })
 });
+router.get('/login', function (req, res) {
+  res.render('user/login')
+})
+router.get('/signup', function (req, res) {
+  res.render('user/signup')
+})
+router.post('/signup', (req, res) => {
+
+  userHelper.doSignup(req.body).then((response) => {
+    console.log(response)
+  })
+})
+
+router.post('/login',(req,res)=>{
+  userHelper.doLogin(req.body)
+})
 
 module.exports = router;
