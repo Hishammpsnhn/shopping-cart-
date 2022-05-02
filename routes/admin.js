@@ -5,7 +5,6 @@ var productHelper= require('../helpers/product-helpers')
 router.get('/', function(req, res, next) {
 
 productHelper.getAllProducts().then((products)=>{
-  console.log(products)  
   res.render('admin/view-products',{products,admin:true})
 })  
 });
@@ -15,7 +14,7 @@ router.get('/add-product', function(req, res, next) {
 });
 
 router.post('/add-product',(req,res)=>{
-  console.log(req.body)
+
   
  productHelper.addProduct(req.body,(id)=>{
     let image = req.files.Image
@@ -28,6 +27,9 @@ router.post('/add-product',(req,res)=>{
     })
   })
 })
-
+router.get("/delete-product/:id",(req,res)=>{
+  let id = req.params.id
+  console.log(id)
+})
 
 module.exports = router;

@@ -15,20 +15,25 @@ module.exports = {
   doLogin:(userdata)=>{
     return new Promise(async(resolve,reject)=>{
       let loginStatus= false
-   
+      let response={}
       let user= await db.get().collection(collection.USER_COLLECTION).findOne({Email:userdata.Email})
-      console.log(user)
       if(user){
         bcrypt.compare(userdata.Password,user.Password).then((status)=>{
           if(status){
             console.log("login")
+            response.user=user
+            response.status=true
+            resolve(response)
           }else{
             console.log("login fail")
+            resolve({status:false})
+
           }
         })
 
       }else{
         console.log("not user")
+        resolve({status:false})
       }
     })
   }
